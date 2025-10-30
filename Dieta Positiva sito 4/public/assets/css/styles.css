@@ -1,12 +1,28 @@
 :root {
+  /* Colors */
   --deep-navy: #002379;
   --light-blue: #0077B6;
   --positive-orange: #FF5F00;
   --light-orange: #FF9F66;
   --natural-raw: #FFFAE6;
   --white: #fff;
+  --text-muted: #f9f9fc;
   --nav-translucent: rgba(0, 35, 121, 0.7);
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, Arial, sans-serif;
+
+  /* Layout */
   --header-height: 68px;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --radius-1: 12px;
+  --radius-2: 16px;
+  --radius-3: 20px;
+
+  /* Effects */
   --shadow-high: 0 6px 32px rgba(0,0,0,0.14);
   --shadow-low: 0 2px 12px rgba(0,0,0,0.07);
 }
@@ -19,7 +35,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, Arial, sans-serif;
+  font-family: var(--font-sans);
   background: var(--natural-raw);
   color: var(--deep-navy);
   font-size: 18px;
@@ -180,44 +196,45 @@ img, picture, svg { max-width: 100%; display: block; }
 .trust__cta.cta { margin-top: 1.2rem; }
 
 /* Services Section */
-.services { background: linear-gradient(90deg, var(--natural-raw), #fff 70%); padding: 6rem 0 5rem; }
+.services { background: linear-gradient(90deg, var(--natural-raw), var(--white) 70%); padding: 6rem 0 5rem; }
 .services h2 { text-align: center; font-size: 2.15rem; color: var(--deep-navy); font-weight: 700; margin-bottom: 2.5rem; }
-.services__cards {
-  display: flex; gap: 2.2rem; justify-content: center;
-  flex-wrap: wrap; margin-top: 1.7rem;
+/* Bento grid - Services */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.6rem;
+  margin-top: 1.7rem;
 }
-.service-card {
-  background: var(--white); border-radius: 19px; box-shadow: var(--shadow-high);
-  padding: 2.3rem 2rem 2rem; max-width: 350px; flex: 1 0 320px;
-  display: flex; flex-direction: column; gap: 1.15rem; position: relative;
-  transition: box-shadow 0.24s, transform 0.20s;
+.bento-grid__item {
+  background: var(--white);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-high);
+  padding: 2rem;
+  transition: transform .18s ease, box-shadow .22s ease;
   will-change: transform;
-  opacity: 0; transform: translateY(55px) scale(.97);
+  opacity: 0; transform: translateY(55px) scale(.98);
 }
-.service-card.visible { opacity: 1; transform: none; }
-.service-card:hover, .service-card:focus-within {
+.bento-grid__item.visible { opacity: 1; transform: none; }
+.bento-grid__item:hover, .bento-grid__item:focus-within {
+  transform: translateY(-6px) scale(1.02);
   box-shadow: 0 12px 44px rgba(0,35,121,0.18);
-  transform: translateY(-9px) scale(1.028);
-  z-index: 2;
 }
-.service-card__price {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--positive-orange); margin-bottom: 1.1rem;
+.bento-grid__item h3 { margin-top: 0; margin-bottom: .6rem; }
+.bento-grid__item p { margin: 0; }
+
+/* Layout placements for 3-card bento */
+.bento-grid > .bento-grid__item:nth-child(1) { grid-column: span 5; }
+.bento-grid > .bento-grid__item:nth-child(2) { grid-column: span 7; }
+.bento-grid > .bento-grid__item:nth-child(3) { grid-column: 3 / span 7; }
+
+@media (max-width: 992px) {
+  .bento-grid > .bento-grid__item:nth-child(1) { grid-column: span 6; }
+  .bento-grid > .bento-grid__item:nth-child(2) { grid-column: span 6; }
+  .bento-grid > .bento-grid__item:nth-child(3) { grid-column: span 12; }
 }
-.service-card__buy, .service-card__consult {
-  display: inline-block;
-  border: none; outline: none;
-  padding: 11px 0; width: 100%; border-radius: 20px;
-  font-size: 1.12rem; font-weight: 600;
-  color: var(--deep-navy); background: var(--light-orange);
-  margin-bottom: .53rem; margin-top: 0.37rem;
-  cursor: pointer;
-  transition: background .13s, color .13s, box-shadow .18s;
-}
-.service-card__buy:hover, .service-card__buy:focus,
-.service-card__consult:hover, .service-card__consult:focus {
-  background: var(--positive-orange); color: var(--white);
+@media (max-width: 768px) {
+  .bento-grid { grid-template-columns: 1fr; }
+  .bento-grid > .bento-grid__item { grid-column: auto; }
 }
 
 /* About Preview */
@@ -292,7 +309,7 @@ img, picture, svg { max-width: 100%; display: block; }
 .footer__socials { margin-top: .7rem; display: flex; gap: 0.7em; }
 .footer__social svg { fill: var(--white); opacity: 0.85; transition: opacity .16s; }
 .footer__social:hover svg, .footer__social:focus svg { opacity: 1; }
-.footer__bottom { text-align: center; font-size: 1rem; color: #f9f9fc; margin-top: 0.8rem; }
+.footer__bottom { text-align: center; font-size: 1rem; color: var(--text-muted); margin-top: 0.8rem; }
 
 /* Modal Styles */
 .modal {
@@ -351,6 +368,14 @@ img, picture, svg { max-width: 100%; display: block; }
 /* Animations: Animate on scroll (Observer) */
 [data-animate] { opacity: 0; transition: opacity .82s cubic-bezier(.25,.64,.38,1.11), transform .65s cubic-bezier(.32,.77,.66,.43); transform: translateY(40px); }
 [data-animate].visible { opacity: 1; transform: none; }
+
+/* Fade-in-up variant for titles */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+[data-animate="fade-in-up"] { opacity: 0; transform: translateY(20px); }
+[data-animate="fade-in-up"].visible { animation: fade-in-up .7s cubic-bezier(.25,.64,.38,1.11) forwards; }
 
 /* CTA button base */
 .cta {
